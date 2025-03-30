@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoFit - Fitness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #374151;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #9333ea, #3b82f6);
+            transition: width 0.5s ease;
+        }
+        .metric-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 bg-gray-800 shadow-lg z-50">
+        <div class="flex justify-between items-center p-4">
+            <div class="text-xl font-bold text-purple-400">MemoFit</div>
+            <div class="flex space-x-6">
+                <a href="dashboard.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-home text-xl"></i>
+                </a>
+                <a href="camera.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-camera text-xl"></i>
+                </a>
+                <a href="stories.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-users text-xl"></i>
+                </a>
+                <a href="fitness.html" class="text-purple-400">
+                    <i class="fas fa-heartbeat text-xl"></i>
+                </a>
+                <a href="chat.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-comment-dots text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Fitness Content -->
+    <main class="pt-20 pb-16 px-4">
+        <h1 class="text-2xl font-bold mb-6">Your Fitness</h1>
+        
+        <!-- Daily Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Steps Card -->
+            <div class="metric-card bg-gray-800 rounded-xl p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">Steps</h3>
+                        <p class="text-gray-400 text-sm">Today's progress</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-purple-500 bg-opacity-20 flex items-center justify-center">
+                        <i class="fas fa-walking text-purple-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="text-3xl font-bold" id="stepsCount">0</span>
+                    <span class="text-gray-400">/ 10,000</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="stepsProgress" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- Distance Card -->
+            <div class="metric-card bg-gray-800 rounded-xl p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">Distance</h3>
+                        <p class="text-gray-400 text-sm">Kilometers walked</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
+                        <i class="fas fa-route text-blue-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="text-3xl font-bold" id="distanceCount">0.0</span>
+                    <span class="text-gray-400">/ 5.0 km</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="distanceProgress" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- Calories Card -->
+            <div class="metric-card bg-gray-800 rounded-xl p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">Calories</h3>
+                        <p class="text-gray-400 text-sm">Burned today</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
+                        <i class="fas fa-fire text-red-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="text-3xl font-bold" id="caloriesCount">0</span>
+                    <span class="text-gray-400">/ 500 cal</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="caloriesProgress" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Activity History -->
+        <div class="bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold">Activity History</h2>
+                <select class="bg-gray-700 text-white px-3 py-2 rounded-lg">
+                    <option>This Week</option>
+                    <option>This Month</option>
+                    <option>This Year</option>
+                </select>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Activity items will be added dynamically -->
+                <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center">
+                            <i class="fas fa-walking text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">Morning Walk</h3>
+                            <p class="text-gray-400 text-sm">Today, 8:30 AM</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-medium">3,245 steps</p>
+                        <p class="text-gray-400 text-sm">2.1 km</p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                            <i class="fas fa-running text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium">Evening Run</h3>
+                            <p class="text-gray-400 text-sm">Yesterday, 6:15 PM</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-medium">5,780 steps</p>
+                        <p class="text-gray-400 text-sm">3.8 km</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Start Activity Button -->
+        <button id="startActivityBtn" class="w-full py-4 bg-purple-600 hover:bg-purple-700 rounded-xl font-medium text-lg transition duration-300">
+            <i class="fas fa-play mr-2"></i> Start New Activity
+        </button>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-800 flex justify-around p-3">
+        <a href="dashboard.html" class="text-gray-300">
+            <i class="fas fa-home text-xl"></i>
+        </a>
+        <a href="camera.html" class="bg-purple-600 p-3 rounded-full -mt-8 shadow-lg">
+            <i class="fas fa-camera text-xl"></i>
+        </a>
+        <a href="fitness.html" class="text-purple-400">
+            <i class="fas fa-heartbeat text-xl"></i>
+        </a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Fitness tracking functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepsCount = document.getElementById('stepsCount');
+            const distanceCount = document.getElementById('distanceCount');
+            const caloriesCount = document.getElementById('caloriesCount');
+            const stepsProgress = document.getElementById('stepsProgress');
+            const distanceProgress = document.getElementById('distanceProgress');
+            const caloriesProgress = document.getElementById('caloriesProgress');
+            const startActivityBtn = document.getElementById('startActivityBtn');
+            
+            // Mock data - in a real app this would come from device sensors
+            let steps = 0;
+            let distance = 0;
+            let calories = 0;
+            
+            // Check for device motion support
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', (event) => {
+                    // Simple step counter - in reality you'd need more sophisticated logic
+                    if (event.acceleration.x > 1.5 || event.acceleration.y > 1.5) {
+                        steps += 1;
+                        updateMetrics();
+                    }
+                });
+                
+                // Request permission for iOS 13+ devices
+                if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                    startActivityBtn.addEventListener('click', () => {
+                        DeviceMotionEvent.requestPermission()
+                            .then(permissionState => {
+                                if (permissionState === 'granted') {
+                                    startActivity();
+                                }
+                            })
+                            .catch(console.error);
+                    });
+                } else {
+                    startActivityBtn.addEventListener('click', startActivity);
+                }
+            } else {
+                alert('Device motion not supported on this device. Using mock data.');
+                startActivityBtn.addEventListener('click', startActivity);
+            }
+            
+            // Start activity tracking
+            function startActivity() {
+                alert('Activity tracking started! Move your device to count steps.');
+                
+                // Simulate step counting if no device motion
+                if (!window.DeviceMotionEvent) {
+                    const interval = setInterval(() => {
+                        steps += Math.floor(Math.random() * 10);
+                        updateMetrics();
+                    }, 2000);
+                    
+                    // Stop after 30 seconds for demo
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        alert('Activity completed!');
+                    }, 30000);
+                }
+            }
+            
+            // Update all metrics
+            function updateMetrics() {
+                // Calculate derived metrics
+                distance = (steps * 0.000762).toFixed(1); // Average step length in km
+                calories = Math.floor(steps * 0.04); // Rough calories burned per step
+                
+                // Update display
+                stepsCount.textContent = steps.toLocaleString();
+                distanceCount.textContent = distance;
+                caloriesCount.textContent = calories;
+                
+                // Update progress bars
+                stepsProgress.style.width = `${Math.min(100, (steps / 10000) * 100)}%`;
+                distanceProgress.style.width = `${Math.min(100, (distance / 5) * 100)}%`;
+                caloriesProgress.style.width = `${Math.min(100, (calories / 500) * 100)}%`;
+            }
+            
+            // Initialize with some data
+            steps = 3421;
+            updateMetrics();
+        });
+    </script>
+</body>
+</html>
