@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoFit - Camera</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .filter-option {
+            transition: all 0.3s ease;
+        }
+        .filter-option:hover {
+            transform: scale(1.1);
+        }
+        .filter-option.active {
+            border: 2px solid #9333ea;
+        }
+        #videoElement {
+            transform: scaleX(-1); /* Mirror effect */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Camera View -->
+    <div class="relative h-screen w-full overflow-hidden">
+        <!-- Video Feed -->
+        <video id="videoElement" autoplay class="w-full h-full object-cover"></video>
+        
+        <!-- Filters Overlay -->
+        <div id="filterOverlay" class="absolute inset-0"></div>
+        
+        <!-- Controls -->
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+            <!-- Filter Selector -->
+            <div class="flex space-x-4 mb-6 overflow-x-auto pb-2">
+                <div class="filter-option flex-shrink-0 w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center" data-filter="none">
+                    <i class="fas fa-times text-xl"></i>
+                </div>
+                <div class="filter-option flex-shrink-0 w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center" data-filter="grayscale">
+                    <i class="fas fa-moon text-xl"></i>
+                </div>
+                <div class="filter-option flex-shrink-0 w-16 h-16 rounded-full bg-red-500 flex items-center justify-center" data-filter="sepia">
+                    <i class="fas fa-sun text-xl"></i>
+                </div>
+                <div class="filter-option flex-shrink-0 w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center" data-filter="blur">
+                    <i class="fas fa-snowflake text-xl"></i>
+                </div>
+                <div class="filter-option flex-shrink-0 w-16 h-16 rounded-full bg-green-500 flex items-center justify-center" data-filter="hue-rotate">
+                    <i class="fas fa-palette text-xl"></i>
+                </div>
+            </div>
+            
+            <!-- Capture Button -->
+            <div class="flex justify-center">
+                <button id="captureBtn" class="w-16 h-16 rounded-full bg-white border-4 border-purple-500 flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-full bg-purple-500"></div>
+                </button>
+            </div>
+            
+            <!-- Flip Camera Button -->
+            <button id="flipCameraBtn" class="absolute right-6 top-6 bg-gray-800 bg-opacity-70 p-3 rounded-full">
+                <i class="fas fa-sync-alt text-xl"></i>
+            </button>
+            
+            <!-- Close Button -->
+            <a href="dashboard.html" class="absolute left-6 top-6 bg-gray-800 bg-opacity-70 p-3 rounded-full">
+                <i class="fas fa-times text-xl"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden">
+        <div class="relative w-full h-full">
+            <canvas id="canvasElement" class="w-full h-full object-contain"></canvas>
+            <div class="absolute bottom-0 left-0 right-0 flex justify-center space-x-6 p-6">
+                <button id="retakeBtn" class="bg-gray-700 text-white px-6 py-3 rounded-full">
+                    <i class="fas fa-redo mr-2"></i> Retake
+                </button>
+                <button id="sendBtn" class="bg-purple-600 text-white px-6 py-3 rounded-full">
+                    <i class="fas fa-paper-plane mr-2"></i> Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Camera functionality will be added here
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('videoElement');
+            const canvas = document.getElementById('canvasElement');
+            const captureBtn = document.getElementById('captureBtn');
+            const retakeBtn = document.getElementById('retakeBtn');
+            const sendBtn = document.getElementById('sendBtn');
+            const previewModal = document.getElementById('previewModal');
+            const filterOptions = document.querySelectorAll('.filter-option');
+            const filterOverlay = document.getElementById('filterOverlay');
+            const flipCameraBtn = document.getElementById('flipCameraBtn');
+            
+            let currentStream = null;
+            let facingMode = "user"; // Front camera by default
+            
+            // Initialize camera
+            function initCamera() {
+                if (currentStream) {
+                    currentStream.getTracks().forEach(track => track.stop());
+                }
+                
+                const constraints = {
+                    video: { 
+                        facingMode: facingMode,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
+                
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then(stream => {
+                        currentStream = stream;
+                        video.srcObject = stream;
+                    })
+                    .catch(err => {
+                        console.error("Error accessing camera:", err);
+                        alert("Could not access the camera. Please check permissions.");
+                    });
+            }
+            
+            // Capture photo
+            captureBtn.addEventListener('click', () => {
+                const context = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                // Apply filter before drawing
+                context.filter = filterOverlay.style.filter || 'none';
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                previewModal.classList.remove('hidden');
+            });
+            
+            // Retake photo
+            retakeBtn.addEventListener('click', () => {
+                previewModal.classList.add('hidden');
+            });
+            
+            // Save and send photo
+            sendBtn.addEventListener('click', () => {
+                const imageData = canvas.toDataURL('image/png');
+                
+                // Save to localStorage
+                const savedPictures = JSON.parse(localStorage.getItem('memoFitPictures')) || [];
+                savedPictures.unshift(imageData);
+                localStorage.setItem('memoFitPictures', JSON.stringify(savedPictures));
+                
+                alert('Photo saved to your profile!');
+                previewModal.classList.add('hidden');
+                window.location.href = 'profile.html';
+            });
+            
+            // Apply filters
+            filterOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    filterOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                    
+                    const filter = option.dataset.filter;
+                    switch(filter) {
+                        case 'grayscale':
+                            filterOverlay.style.filter = 'grayscale(100%)';
+                            break;
+                        case 'sepia':
+                            filterOverlay.style.filter = 'sepia(100%)';
+                            break;
+                        case 'blur':
+                            filterOverlay.style.filter = 'blur(5px)';
+                            break;
+                        case 'hue-rotate':
+                            filterOverlay.style.filter = 'hue-rotate(90deg)';
+                            break;
+                        default:
+                            filterOverlay.style.filter = 'none';
+                    }
+                });
+            });
+            
+            // Flip camera
+            flipCameraBtn.addEventListener('click', () => {
+                facingMode = facingMode === "user" ? "environment" : "user";
+                initCamera();
+            });
+            
+            // Initialize on load
+            initCamera();
+        });
+    </script>
+</body>
+</html>
