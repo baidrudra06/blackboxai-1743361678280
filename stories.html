@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoFit - Stories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .story-circle {
+            position: relative;
+            background: linear-gradient(45deg, #9333ea, #3b82f6);
+            padding: 2px;
+            border-radius: 50%;
+        }
+        .story-circle::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: conic-gradient(#9333ea 0%, #3b82f6 100%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 2s linear infinite;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .story-content {
+            background-size: cover;
+            background-position: center;
+            transition: all 0.3s ease;
+        }
+        .story-content:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 bg-gray-800 shadow-lg z-50">
+        <div class="flex justify-between items-center p-4">
+            <div class="text-xl font-bold text-purple-400">MemoFit</div>
+            <div class="flex space-x-6">
+                <a href="dashboard.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-home text-xl"></i>
+                </a>
+                <a href="camera.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-camera text-xl"></i>
+                </a>
+                <a href="stories.html" class="text-purple-400">
+                    <i class="fas fa-users text-xl"></i>
+                </a>
+                <a href="fitness.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-heartbeat text-xl"></i>
+                </a>
+                <a href="chat.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-comment-dots text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Stories Content -->
+    <main class="pt-20 pb-16 px-4">
+        <h2 class="text-2xl font-bold mb-6">Stories</h2>
+        
+        <!-- My Story -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold mb-4">Your Story</h3>
+            <div class="flex space-x-4">
+                <div class="flex flex-col items-center">
+                    <div class="story-circle w-20 h-20 flex items-center justify-center mb-2">
+                        <div class="story-content w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center" 
+                             style="background-image: url('https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg');">
+                            <div class="w-full h-full rounded-full bg-black bg-opacity-30 flex items-center justify-center">
+                                <i class="fas fa-plus text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="text-sm">Add to Story</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Friends' Stories -->
+        <div>
+            <h3 class="text-lg font-semibold mb-4">Friends' Stories</h3>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                <!-- Story items will be added dynamically -->
+                <div class="flex flex-col items-center">
+                    <div class="story-circle w-20 h-20 flex items-center justify-center mb-2">
+                        <div class="story-content w-16 h-16 rounded-full bg-gray-700" 
+                             style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
+                    </div>
+                    <span class="text-sm">jane_doe</span>
+                    <span class="text-xs text-gray-400">2h left</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="story-circle w-20 h-20 flex items-center justify-center mb-2">
+                        <div class="story-content w-16 h-16 rounded-full bg-gray-700" 
+                             style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                    </div>
+                    <span class="text-sm">john_smith</span>
+                    <span class="text-xs text-gray-400">5h left</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="story-circle w-20 h-20 flex items-center justify-center mb-2">
+                        <div class="story-content w-16 h-16 rounded-full bg-gray-700" 
+                             style="background-image: url('https://randomuser.me/api/portraits/women/68.jpg');"></div>
+                    </div>
+                    <span class="text-sm">emily_w</span>
+                    <span class="text-xs text-gray-400">8h left</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="story-circle w-20 h-20 flex items-center justify-center mb-2">
+                        <div class="story-content w-16 h-16 rounded-full bg-gray-700" 
+                             style="background-image: url('https://randomuser.me/api/portraits/men/75.jpg');"></div>
+                    </div>
+                    <span class="text-sm">mike_t</span>
+                    <span class="text-xs text-gray-400">12h left</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="story-circle w-20 h-20 flex items-center justify-center mb-2">
+                        <div class="story-content w-16 h-16 rounded-full bg-gray-700" 
+                             style="background-image: url('https://randomuser.me/api/portraits/women/90.jpg');"></div>
+                    </div>
+                    <span class="text-sm">sarah_j</span>
+                    <span class="text-xs text-gray-400">20h left</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-800 flex justify-around p-3">
+        <a href="dashboard.html" class="text-gray-300">
+            <i class="fas fa-home text-xl"></i>
+        </a>
+        <a href="camera.html" class="bg-purple-600 p-3 rounded-full -mt-8 shadow-lg">
+            <i class="fas fa-camera text-xl"></i>
+        </a>
+        <a href="fitness.html" class="text-gray-300">
+            <i class="fas fa-heartbeat text-xl"></i>
+        </a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Story viewing functionality will be added here
+        document.addEventListener('DOMContentLoaded', () => {
+            const storyItems = document.querySelectorAll('.story-content');
+            
+            storyItems.forEach(story => {
+                story.addEventListener('click', () => {
+                    // In a real app, this would open the story viewer
+                    alert('Viewing story...');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
