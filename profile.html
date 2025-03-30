@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoFit - Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 bg-gray-800 shadow-lg z-50">
+        <div class="flex justify-between items-center p-4">
+            <div class="text-xl font-bold text-purple-400">MemoFit</div>
+            <div class="flex space-x-6">
+                <a href="dashboard.html" class="text-gray-300 hover:text-purple-400">
+                    <i class="fas fa-home text-xl"></i>
+                </a>
+                <a href="profile.html" class="text-purple-400">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <main class="pt-20 pb-16 px-4">
+        <!-- Profile Header -->
+        <div class="flex items-center space-x-4 mb-8">
+            <div class="w-20 h-20 rounded-full bg-purple-500 flex items-center justify-center">
+                <i class="fas fa-user text-3xl text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold">Your Profile</h1>
+                <p class="text-gray-400">@username</p>
+            </div>
+        </div>
+
+        <!-- Saved Pictures Gallery -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Saved Pictures</h2>
+            <div class="grid grid-cols-3 gap-2" id="savedPictures">
+                <!-- Pictures will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="bg-gray-800 rounded-xl p-4 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Your Stats</h2>
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <p class="text-2xl font-bold">42</p>
+                    <p class="text-gray-400 text-sm">Posts</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold">128</p>
+                    <p class="text-gray-400 text-sm">Following</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold">256</p>
+                    <p class="text-gray-400 text-sm">Followers</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-800 flex justify-around p-3">
+        <a href="dashboard.html" class="text-gray-300">
+            <i class="fas fa-home text-xl"></i>
+        </a>
+        <a href="camera.html" class="bg-purple-600 p-3 rounded-full -mt-8 shadow-lg">
+            <i class="fas fa-camera text-xl"></i>
+        </a>
+        <a href="profile.html" class="text-purple-400">
+            <i class="fas fa-user text-xl"></i>
+        </a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Load saved pictures from localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedPictures = JSON.parse(localStorage.getItem('memoFitPictures')) || [];
+            const gallery = document.getElementById('savedPictures');
+            
+            savedPictures.forEach(pic => {
+                const img = document.createElement('img');
+                img.src = pic;
+                img.classList.add('w-full', 'h-32', 'object-cover', 'rounded-lg');
+                gallery.appendChild(img);
+            });
+        });
+    </script>
+</body>
+</html>
